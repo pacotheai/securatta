@@ -1,0 +1,8 @@
+data:
+  uri:
+  username:
+  password:
+
+security:
+  secret: secret
+  issuer: securatta

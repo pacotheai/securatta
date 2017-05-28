@@ -1,0 +1,7 @@
+apply plugin: 'codenarc'
+
+codenarc {
+    configFile = new File(projectDir, 'src/conf/codenarc.groovy')
+    ignoreFailures = false
+    reportFormat = 'html'
+}

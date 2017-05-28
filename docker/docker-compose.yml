@@ -1,0 +1,29 @@
+version: "2"
+services:
+    cassandra:
+      image: cassandra:3
+      ports:
+        - "7199:7199" # JMX
+        - "7000:7000" # Internode
+        - "7001:7001" # Internode (TLS)
+        - "9160:9160" # Thrift client API
+        - "9042:9042" # CQL Native transport
+      volumes:
+        - dbauth-data:/dataauth
+    securatta:
+      build: ./securatta/
+      image: paco/securatta
+      ports:
+        - "5050:5050"
+      links:
+        - cassandra:cassandra
+      volumes:
+        - $PROJECT:/home/user/ws
+        - $HOME/.m2:/home/user/.m2
+        - $HOME/.gradle:/home/user/.gradle
+        - $HOME/.groovy:/home/user/.groovy
+        - $HOME/.sdkman/archives:/home/user/.sdkman/archives
+        - $HOME/.sdkman/candidates:/home/user/.sdkman/candidates
+
+volumes:
+  dbauth-data:
