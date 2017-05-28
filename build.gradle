@@ -15,7 +15,7 @@ apply plugin: 'io.ratpack.ratpack-groovy'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 apply from: 'gradle/compiler.gradle'
-apply from: 'gradle/codenarc.gradle'
+//apply from: 'gradle/codenarc.gradle' // problems with groovy 3.0.0-SNAPSHOT
 apply from: 'gradle/clover.gradle'
 
 repositories {
