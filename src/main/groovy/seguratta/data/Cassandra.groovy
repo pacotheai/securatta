@@ -19,25 +19,7 @@ class Cassandra {
         return Promise.async(accept(session.executeAsync(stmt, args)))
     }
 
-    static Predicate<ResultSet> isEmpty() {
-        return { ResultSet rs ->
-            rs.isEmpty()
-        } as Predicate<ResultSet>
-    }
-
-    static Predicate<ResultSet> isNotEmpty() {
-        return { ResultSet rs ->
-            !rs.isEmpty()
-        } as Predicate<ResultSet>
-    }
-
-    static Row singleRow(ResultSet rs) {
-        return rs.one()
-    }
-
     private static <T> Upstream<T> accept(final ListenableFuture<T> listenable) {
-        return { Downstream<T> down ->
-            down.accept(listenable)
-        } as Upstream<T>
+        return { Downstream<T> down -> down.accept(listenable) } as Upstream<T>
     }
 }

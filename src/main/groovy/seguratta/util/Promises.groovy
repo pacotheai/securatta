@@ -3,13 +3,11 @@ package seguratta.util
 import ratpack.func.Action
 
 /**
- * Created by dev on 5/28/17.
+ * @since 0.1.0
  */
 class Promises {
 
     static Action<Throwable> emptyOptional() {
-        return { Throwable th ->
-            Optional.empty()
-        } as Action<Throwable>
+        return (Throwable th) -> { Optional.empty() } as Action<Throwable>
     }
 }

@@ -26,7 +26,7 @@ class TokenProviderHandler implements Handler {
     void handle(Context ctx) throws Exception {
         ctx
         .parse(UserCredentials)
-        .flatMap(service.&authenticateUser)
+        .flatMap(service::authenticateUser)
         .then(Handlers.ifNotPresent(ctx, 400))
     }
 }

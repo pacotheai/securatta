@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.datastax.driver.core.Cluster
 import com.datastax.driver.core.Row
+import com.datastax.driver.core.ResultSet
 import groovy.util.logging.Slf4j
 import ratpack.exec.Promise
 import seguratta.Config
@@ -40,14 +41,8 @@ class CassandraRepository implements Repository {
 
         return Cassandra
             .executeAsync(cluster.connect(), stmt, username)
-            .map(Cassandra.&singleRow)
-            .map(CassandraRepository.&toUser)
-    }
-
-    static User toUser(Row row) {
-        return new User(
-            name: row.getString('name'),
-            username: row.getString('username'))
+            .map(ResultSet::one)
+            .map(CassandraRepository::toUser)
     }
 
     @Override
@@ -66,37 +61,44 @@ class CassandraRepository implements Repository {
     }
 
     Promise<String> createToken(String username) {
-        Promise
-            .value(config.security.secret)
-            .map(Algorithm.&HMAC256)
-            .map { Algorithm algorithm ->
+        return Promise
+        .value(config.security.secret)
+        .map(Algorithm::HMAC256)
+        .map((Algorithm algorithm) -> {
               JWT
                 .create()
                 .withClaim("username", username)
                 .withIssuer(config.security.issuer)
                 .sign(algorithm)
-            }
+             })
     }
 
     @Override
     Promise<UserToken> verifyToken(String token) {
         return Promise
-            .value(token)
-            .map(Algorithm.&HMAC256)
-            .map { Algorithm algorithm ->
+        .value(token)
+        .map(Algorithm::HMAC256)
+        .map((Algorithm algorithm) -> {
               JWT
               .require(algorithm)
               .withIssuer(config.security.issuer)
               .build() //Reusable verifier instance
               .verify(token)
+             })
+        .map(CassandraRepository::toUser)
+        .map((User user) -> new UserToken(user: user, token: token))
+    }
 
-        }.map { DecodedJWT jwt ->
-            String name = jwt.getClaim('name').asString()
-            String username = jwt.getClaim('username').asString()
+    private static User toUser(Row row) {
+        return new User(
+            name: row.getString('name'),
+            username: row.getString('username'))
+    }
 
-            new User(username: username, name: name)
-        }.map { User user ->
-            new UserToken(user: user, token: token)
-        }
+    private static User toUser(DecodedJWT jwt) {
+        String name = jwt.getClaim('name').asString()
+        String username = jwt.getClaim('username').asString()
+
+        new User(username: username, name: name)
     }
 }

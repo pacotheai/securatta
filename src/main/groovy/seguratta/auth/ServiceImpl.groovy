@@ -21,14 +21,14 @@ class ServiceImpl implements Service {
     Promise<Optional<UserToken>> authenticateUser(UserCredentials credentials) {
         return repository
             .findUserByUsernameAndPassword(credentials.username, credentials.password)
-            .flatMap(repository.&createUserToken)
+            .flatMap(repository::createUserToken)
     }
 
     @Override
     Promise<Optional<UserToken>> authenticateToken(String token) {
         return repository
             .verifyToken(token)
-            .map(Optional.&ofNullable)
-            .onError(Promises.&emptyOptional)
+            .map(Optional::ofNullable)
+            .onError(Promises::emptyOptional)
     }
 }

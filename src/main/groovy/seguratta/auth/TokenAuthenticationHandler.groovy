@@ -22,8 +22,8 @@ class TokenAuthenticationHandler implements Handler {
     void handle(Context ctx) throws Exception {
         Handlers
         .header(ctx, 'Authorization')
-        .map(Handlers.&removeBearerFromToken)
-        .flatMap(service.&authenticateToken)
+        .map(Handlers::removeBearerFromToken)
+        .flatMap(service::authenticateToken)
         .then(Handlers.ifNotPresent(ctx, 401))
     }
 }
