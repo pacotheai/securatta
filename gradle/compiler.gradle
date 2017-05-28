@@ -2,4 +2,5 @@ apply plugin: 'groovy'
 
 compileGroovy {
     groovyOptions.configurationScript = file('src/conf/compiler.groovy')
+    groovyOptions.forkOptions.jvmArgs += ["-Dgroovy.antlr4=true"]
 }

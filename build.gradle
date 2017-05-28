@@ -20,6 +20,7 @@ apply from: 'gradle/clover.gradle'
 
 repositories {
     jcenter()
+    mavenLocal()
     mavenCentral()
 }
 
@@ -27,7 +28,7 @@ dependencies {
     compile ratpack.dependency('guice')
     compile ratpack.dependency('rx')
 
-    compile 'org.codehaus.groovy:groovy-all:2.5.0-alpha-1:indy'
+    compile 'org.codehaus.groovy:groovy-all:3.0.0-SNAPSHOT'
     compile 'org.apache.opennlp:opennlp-tools:1.8.0'
     compile 'ch.qos.logback:logback-classic:1.2.3'
     compile 'com.auth0:java-jwt:3.2.0'
