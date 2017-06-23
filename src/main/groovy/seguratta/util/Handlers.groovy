@@ -1,11 +1,8 @@
 package seguratta.util
 
-import ratpack.exec.Promise
-
-import java.util.function.Predicate
-
 import static ratpack.jackson.Jackson.json
 
+import ratpack.exec.Promise
 import ratpack.func.Action
 import ratpack.handling.Context
 

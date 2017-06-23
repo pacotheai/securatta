@@ -22,6 +22,9 @@ import javax.inject.Inject
 @Slf4j
 class CassandraRepository implements Repository {
 
+    static final String NAME = 'name'
+    static final String USERNAME = 'username'
+
     @Inject
     Cluster cluster
 
@@ -46,8 +49,9 @@ class CassandraRepository implements Repository {
 
     static User toUser(Row row) {
         return new User(
-            name: row.getString('name'),
-            username: row.getString('username'))
+            name: row.getString(NAME),
+            username: row.getString(USERNAME),
+        )
     }
 
     @Override
@@ -59,7 +63,7 @@ class CassandraRepository implements Repository {
                   new UserToken(
                       user: new User(username: pUser.username),
                       token: token,
-                      expirationDate: new Date()
+                      expirationDate: new Date(),
                   )
               }
             }
@@ -72,7 +76,7 @@ class CassandraRepository implements Repository {
             .map { Algorithm algorithm ->
               JWT
                 .create()
-                .withClaim("username", username)
+                .withClaim(USERNAME, username)
                 .withIssuer(config.security.issuer)
                 .sign(algorithm)
             }
@@ -91,8 +95,8 @@ class CassandraRepository implements Repository {
               .verify(token)
 
         }.map { DecodedJWT jwt ->
-            String name = jwt.getClaim('name').asString()
-            String username = jwt.getClaim('username').asString()
+            String name = jwt.getClaim(NAME).asString()
+            String username = jwt.getClaim(USERNAME).asString()
 
             new User(username: username, name: name)
         }.map { User user ->
