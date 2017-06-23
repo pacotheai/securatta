@@ -1,4 +1,4 @@
-package seguratta.data
+package securatta.data
 
 import com.datastax.driver.core.Cluster
 import com.google.inject.AbstractModule

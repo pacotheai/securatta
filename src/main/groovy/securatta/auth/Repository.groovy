@@ -1,8 +1,8 @@
-package seguratta.auth
+package securatta.auth
 
 import ratpack.exec.Promise
-import seguratta.domain.User
-import seguratta.domain.UserToken
+import securatta.domain.User
+import securatta.domain.UserToken
 
 /**
  * Repository represents how user related data is going to be persisted

@@ -1,4 +1,4 @@
-package seguratta.auth
+package securatta.auth
 
 import com.google.inject.AbstractModule
 import com.google.inject.Scopes

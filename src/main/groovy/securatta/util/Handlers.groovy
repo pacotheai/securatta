@@ -1,4 +1,4 @@
-package seguratta.util
+package securatta.util
 
 import static ratpack.jackson.Jackson.json
 

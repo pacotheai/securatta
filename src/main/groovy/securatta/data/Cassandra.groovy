@@ -1,4 +1,4 @@
-package seguratta.data
+package securatta.data
 
 import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Row

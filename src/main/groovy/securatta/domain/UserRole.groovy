@@ -1,4 +1,4 @@
-package seguratta.domain
+package securatta.domain
 
 /**
  * @since 0.1.0

@@ -1,7 +1,7 @@
 import ratpack.server.ServerConfigBuilder
-import seguratta.Config
-import seguratta.auth.TokenAuthenticationHandler
-import seguratta.auth.TokenProviderHandler
+import securatta.Config
+import securatta.auth.TokenAuthenticationHandler
+import securatta.auth.TokenProviderHandler
 
 import static ratpack.groovy.Groovy.ratpack
 

@@ -1,4 +1,4 @@
-package seguratta.domain
+package securatta.domain
 
 /**
  * Represents a user. A user is an authenticated individual.

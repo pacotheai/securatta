@@ -1,4 +1,4 @@
-package seguratta.util
+package securatta.util
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -34,4 +34,3 @@ class SystemResources {
         Class.getResource(filePath)
     }
 }
-

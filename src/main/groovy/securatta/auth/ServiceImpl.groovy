@@ -1,10 +1,10 @@
-package seguratta.auth
+package securatta.auth
 
 import groovy.util.logging.Slf4j
 import ratpack.exec.Promise
-import seguratta.domain.UserCredentials
-import seguratta.domain.UserToken
-import seguratta.util.Promises
+import securatta.domain.UserCredentials
+import securatta.domain.UserToken
+import securatta.util.Promises
 
 import javax.inject.Inject
 

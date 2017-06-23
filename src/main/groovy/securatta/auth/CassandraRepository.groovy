@@ -1,4 +1,4 @@
-package seguratta.auth
+package securatta.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -7,10 +7,10 @@ import com.datastax.driver.core.Cluster
 import com.datastax.driver.core.Row
 import groovy.util.logging.Slf4j
 import ratpack.exec.Promise
-import seguratta.Config
-import seguratta.data.Cassandra
-import seguratta.domain.User
-import seguratta.domain.UserToken
+import securatta.Config
+import securatta.data.Cassandra
+import securatta.domain.User
+import securatta.domain.UserToken
 
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class CassandraRepository implements Repository {
 
     @Override
     Promise<User> findUserByUsernameAndPassword(String username, String password) {
-        String stmt = "SELECT * FROM seguratta.users WHERE username = ?"
+        String stmt = "SELECT * FROM securatta.users WHERE username = ?"
 
         return Cassandra
             .executeAsync(cluster.connect(), stmt, username)

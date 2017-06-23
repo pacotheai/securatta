@@ -1,17 +1,17 @@
-package seguratta.domain
+package securatta.domain
 
 /**
  * @since 0.1.0
  */
-class Role {
+class ResourcePermission {
 
     /**
      * @since 0.1.0
      */
-    String name
+    Resource resource
 
     /**
      * @since 0.1.0
      */
-    String description
+    Permission permission
 }

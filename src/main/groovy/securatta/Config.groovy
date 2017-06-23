@@ -1,4 +1,4 @@
-package seguratta
+package securatta
 
 /**
  * @since 0.1.0
@@ -19,9 +19,9 @@ class Config {
      */
     static class Data {
         /**
-         * @since 0.1.0
+         * @since 0.1.2
          */
-        String uri
+        String contactPoint
 
         /**
          * @since 0.1.0
