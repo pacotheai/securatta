@@ -5,9 +5,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.ratpack:ratpack-gradle:1.4.6'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-        classpath 'com.bmuschko:gradle-clover-plugin:2.1.0'
+        classpath "io.ratpack:ratpack-gradle:$ratpack_plugin"
+        classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_plugin"
+        classpath "com.bmuschko:gradle-clover-plugin:$clover_plugin"
     }
 }
 
@@ -27,14 +27,14 @@ dependencies {
     compile ratpack.dependency('guice')
     compile ratpack.dependency('rx')
 
-    compile 'org.codehaus.groovy:groovy-all:2.5.0-alpha-1:indy'
-    compile 'org.apache.opennlp:opennlp-tools:1.8.0'
-    compile 'ch.qos.logback:logback-classic:1.2.3'
-    compile 'com.auth0:java-jwt:3.2.0'
-    //compile "io.vavr:vavr:0.9.0"
-    compile "com.datastax.cassandra:cassandra-driver-core:3.2.0"
+    compile "org.codehaus.groovy:groovy-all:$groovy"
+    compile "ch.qos.logback:logback-classic:$logback"
+    compile "com.auth0:java-jwt:$auth0_java_jwt"
+    compile "org.cognitor.cassandra:cassandra-migration:$cassandra_migration"
+    compile "com.datastax.cassandra:cassandra-driver-core:$cassandra_datastax"
 
-    clover 'org.openclover:clover:4.2.0'
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-    testCompile 'junit:junit:4.12'
+    clover "org.openclover:clover:$clover"
+
+    testCompile "org.spockframework:spock-core:$spock"
+    testCompile "junit:junit:$junit"
 }
