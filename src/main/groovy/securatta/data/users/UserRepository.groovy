@@ -9,8 +9,6 @@ import groovy.util.logging.Slf4j
 import ratpack.exec.Promise
 import securatta.Config
 import securatta.data.Cassandra
-import securatta.data.users.User
-import securatta.data.users.UserToken
 
 import javax.inject.Inject
 
@@ -37,8 +35,38 @@ class UserRepository {
     @Inject
     Config config
 
-    Promise<User> findUserByUsernameAndPassword(String username, String password) {
-        String stmt = "SELECT * FROM securatta.users WHERE username = ?"
+    /**
+     * Adds a new user
+     *
+     * @param fullName the human readable name
+     * @param username the user's username
+     * @return the created user entry
+     * @since 0.1.2
+     */
+    Promise<User> create(String fullName, String username) {
+        String stmt = """
+            INSERT INTO securatta.user
+              (name, username) VALUES
+              (?,?)
+        """
+
+        return Cassandra
+          .executeAsync(cluster.connect(), stmt, fullName, username)
+          .map(Cassandra.&singleRow)
+          .map {
+            new User(name: fullName, username: username)
+          }
+    }
+
+    /**
+     * Searchs for a given user by username
+     *
+     * @param username the user's username
+     * @return a {@link User} promise
+     * @since 0.1.2
+     */
+    Promise<User> findByUsername(String username) {
+        String stmt = "SELECT * FROM securatta.user WHERE username = ?"
 
         return Cassandra
             .executeAsync(cluster.connect(), stmt, username)

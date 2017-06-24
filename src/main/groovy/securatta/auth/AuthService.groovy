@@ -36,7 +36,8 @@ class AuthService {
      */
     Promise<UserToken> authenticateUser(UserCredentials credentials) {
         return repository
-            .findUserByUsernameAndPassword(credentials.username, credentials.password)
+        // TODO check password
+            .findByUsername(credentials.username)
             .flatMap(repository.&createUserToken)
     }
 

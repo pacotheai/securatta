@@ -5,7 +5,6 @@ import com.google.inject.AbstractModule
 import com.google.inject.multibindings.Multibinder
 
 import ratpack.service.Service
-import securatta.data.DataMigrationService
 
 /**
  * Guice module loading all startup services
@@ -21,6 +20,6 @@ class InitModule extends AbstractModule {
 
     updaterBindings
       .addBinding()
-      .to(DataMigrationService).in(Scopes.SINGLETON)
+      .to(InitService).in(Scopes.SINGLETON)
   }
 }

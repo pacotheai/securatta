@@ -36,5 +36,6 @@ dependencies {
     clover "org.openclover:clover:$clover"
 
     testCompile "org.spockframework:spock-core:$spock"
+    testCompile "org.spockframework:spock-guice:$spock"
     testCompile "junit:junit:$junit"
 }

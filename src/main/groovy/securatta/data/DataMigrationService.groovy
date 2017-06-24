@@ -1,8 +1,6 @@
 package securatta.data
 
 import javax.inject.Inject
-import ratpack.service.Service
-import ratpack.service.StartEvent
 import com.datastax.driver.core.Cluster
 import org.cognitor.cassandra.migration.Database
 import org.cognitor.cassandra.migration.MigrationTask
@@ -13,7 +11,7 @@ import org.cognitor.cassandra.migration.MigrationRepository
  *
  * @since 0.1.2
  */
-class DataMigrationService implements Service {
+class DataMigrationService {
 
     /**
      * Securatta keyspace
@@ -32,6 +30,14 @@ class DataMigrationService implements Service {
     """
 
     /**
+     * Query to drop  Securatta keyspace in Cassandra
+     * @since 0.1.2
+     */
+    static final String SECURATTA_DROP_KEYSPACE = """
+        DROP KEYSPACE $SECURATTA_KEYSPACE
+    """
+
+    /**
      * Cassandra cluster connection
      *
      * @since 0.1.2
@@ -39,8 +45,12 @@ class DataMigrationService implements Service {
     @Inject
     Cluster cluster
 
-    @Override
-    void onStart(final StartEvent event) {
+    /**
+     * Launches the migration process
+     *
+     * @since 0.1.2
+     */
+    void migrate() {
         // migration requires the keyspace to be present
         cluster.connect().execute(SECURATTA_CREATE_KEYSPACE)
 
@@ -49,5 +59,14 @@ class DataMigrationService implements Service {
         MigrationTask migrationTask = new MigrationTask(databaseConnection, new MigrationRepository())
 
         migrationTask.migrate()
+    }
+
+    /**
+     * Drops the keyspace. Only used in testing environment
+     *
+     * @since 0.1.2
+     */
+    void dropKeyspace() {
+        cluster.connect().execute(SECURATTA_DROP_KEYSPACE)
     }
 }
