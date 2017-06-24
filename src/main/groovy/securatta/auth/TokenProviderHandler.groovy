@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TokenProviderHandler implements Handler {
 
     @Inject
-    Service service
+    AuthService service
 
     @Override
     void handle(Context ctx) throws Exception {

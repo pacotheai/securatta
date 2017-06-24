@@ -16,7 +16,7 @@ import javax.inject.Inject
 class TokenAuthenticationHandler implements Handler {
 
     @Inject
-    Service service
+    AuthService service
 
     @Override
     void handle(Context ctx) throws Exception {

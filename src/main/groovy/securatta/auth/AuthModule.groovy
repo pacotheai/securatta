@@ -2,6 +2,7 @@ package securatta.auth
 
 import com.google.inject.AbstractModule
 import com.google.inject.Scopes
+import securatta.data.users.UserRepository
 
 /**
  * Authentication module bindings
@@ -11,9 +12,8 @@ import com.google.inject.Scopes
 class AuthModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(Repository).to(CassandraRepository).in(Scopes.SINGLETON)
-        bind(Service).to(ServiceImpl).in(Scopes.SINGLETON)
-
+        bind(AuthService).in(Scopes.SINGLETON)
+        bind(UserRepository).in(Scopes.SINGLETON)
         bind(TokenProviderHandler).in(Scopes.SINGLETON)
         bind(TokenAuthenticationHandler).in(Scopes.SINGLETON)
     }
