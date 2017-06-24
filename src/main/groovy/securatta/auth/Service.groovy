@@ -1,8 +1,8 @@
 package securatta.auth
 
 import ratpack.exec.Promise
-import securatta.domain.UserCredentials
-import securatta.domain.UserToken
+import securatta.data.users.UserCredentials
+import securatta.data.users.UserToken
 
 /**
  *

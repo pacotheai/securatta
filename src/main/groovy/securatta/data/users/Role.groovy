@@ -1,4 +1,4 @@
-package securatta.domain
+package securatta.data.users
 
 /**
  * @since 0.1.0

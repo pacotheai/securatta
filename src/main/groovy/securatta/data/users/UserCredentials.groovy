@@ -1,4 +1,4 @@
-package securatta.domain
+package securatta.data.users
 
 /**
  * Authentication credentials for a given user

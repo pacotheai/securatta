@@ -2,7 +2,7 @@ package securatta.auth
 
 import ratpack.handling.Context
 import ratpack.handling.Handler
-import securatta.domain.UserCredentials
+import securatta.data.users.UserCredentials
 import securatta.util.Handlers
 
 import javax.inject.Inject

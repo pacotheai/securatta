@@ -9,8 +9,8 @@ import groovy.util.logging.Slf4j
 import ratpack.exec.Promise
 import securatta.Config
 import securatta.data.Cassandra
-import securatta.domain.User
-import securatta.domain.UserToken
+import securatta.data.users.User
+import securatta.data.users.UserToken
 
 import javax.inject.Inject
 

@@ -2,8 +2,8 @@ package securatta.auth
 
 import groovy.util.logging.Slf4j
 import ratpack.exec.Promise
-import securatta.domain.UserCredentials
-import securatta.domain.UserToken
+import securatta.data.users.UserCredentials
+import securatta.data.users.UserToken
 import securatta.util.Promises
 
 import javax.inject.Inject
