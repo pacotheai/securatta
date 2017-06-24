@@ -17,7 +17,7 @@ class DataMigrationService implements Service {
 
     static final String SECURATTA_KEYSPACE = 'securatta'
     static final String SECURATTA_CREATE_KEYSPACE = """
-       CREATE KEYSPACE $SECURATTA_KEYSPACE
+       CREATE KEYSPACE IF NOT EXISTS $SECURATTA_KEYSPACE
           WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
     """
 
@@ -26,10 +26,10 @@ class DataMigrationService implements Service {
 
     @Override
     void onStart(final StartEvent event) {
-        cluster
-        .connect()
-        .execute(SECURATTA_CREATE_KEYSPACE)
+        // migration requires the keyspace to be present
+        cluster.connect().execute(SECURATTA_CREATE_KEYSPACE)
 
+        // migration
         Database databaseConnection = new Database(cluster, SECURATTA_KEYSPACE)
         MigrationTask migrationTask = new MigrationTask(databaseConnection, new MigrationRepository())
 
