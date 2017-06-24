@@ -23,9 +23,9 @@ class Handlers {
      * @since 0.1.0
      */
     static <T> Action<T> ifNotPresent(Context context, Integer status) {
-        return { Optional<T> param ->
-            if (param.isPresent()) {
-                context.render(json(param.get()))
+        return { T param ->
+            if (!param) {
+                context.render(json(param))
             } else {
                 context.response.status(status)
                 context.render("")
