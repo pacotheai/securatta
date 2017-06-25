@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "io.ratpack:ratpack-gradle:$ratpack_plugin"
+        classpath "io.ratpack:ratpack-gradle:$ratpack_version"
         classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_plugin"
         classpath "com.bmuschko:gradle-clover-plugin:$clover_plugin"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:$asciidoctor"
@@ -32,7 +32,9 @@ dependencies {
 
     compile "org.codehaus.groovy:groovy-all:$groovy"
     compile "ch.qos.logback:logback-classic:$logback"
-    compile "com.auth0:java-jwt:$auth0_java_jwt"
+    compile "org.pac4j:pac4j-jwt:$pac4j_jwt"
+    compile "org.mindrot:jbcrypt:$bcrypt"
+    compile "io.ratpack:ratpack-pac4j:$ratpack_version"
     compile "org.cognitor.cassandra:cassandra-migration:$cassandra_migration"
     compile "com.datastax.cassandra:cassandra-driver-core:$cassandra_datastax"
 
@@ -40,6 +42,6 @@ dependencies {
 
     testCompile "org.spockframework:spock-core:$spock"
     testCompile "org.spockframework:spock-guice:$spock"
-    testCompile 'org.springframework.restdocs:spring-restdocs-restassured:$restdocs'
+    testCompile "org.springframework.restdocs:spring-restdocs-restassured:$restdocs"
     testCompile "junit:junit:$junit"
 }
