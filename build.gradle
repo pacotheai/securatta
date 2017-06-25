@@ -8,12 +8,15 @@ buildscript {
         classpath "io.ratpack:ratpack-gradle:$ratpack_plugin"
         classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_plugin"
         classpath "com.bmuschko:gradle-clover-plugin:$clover_plugin"
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:$asciidoctor"
+        classpath "org.asciidoctor:asciidoctorj-diagram:$asciidoctor_diagram"
     }
 }
 
 apply plugin: 'io.ratpack.ratpack-groovy'
 apply plugin: 'com.github.johnrengelman.shadow'
 
+apply from: 'gradle/docs.gradle'
 apply from: 'gradle/compiler.gradle'
 apply from: 'gradle/codenarc.gradle'
 apply from: 'gradle/clover.gradle'
@@ -37,5 +40,6 @@ dependencies {
 
     testCompile "org.spockframework:spock-core:$spock"
     testCompile "org.spockframework:spock-guice:$spock"
+    testCompile 'org.springframework.restdocs:spring-restdocs-restassured:$restdocs'
     testCompile "junit:junit:$junit"
 }

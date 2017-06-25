@@ -1,0 +1,20 @@
+apply plugin: 'org.asciidoctor.convert'
+
+/**
+ * API-DOCS
+ */
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctor {
+  requires 'asciidoctor-diagram'
+  sourceDir = file('src/docs')
+  attributes 'source-highlighter'  :  'prettify',
+             toc                   :  'left',
+             icons                 :  'font',
+             toclevels             :  3,
+             'pdf-style'           :  'default',
+             'snippets'            : snippetsDir,
+             'releaseVersion'      : version
+}

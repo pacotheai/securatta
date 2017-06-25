@@ -1,0 +1,17 @@
+= Securatta
+:revnumber: {releaseVersion}
+:numbered:
+:imagesDir: images/
+:baseDir: ../..
+:stem:
+
+:ratpackMain: {baseDir}/src/main/groovy
+:ratpackResources: {baseDir}/src/main/resources
+:ratpackFiles: {baseDir}/src/ratpack
+:ratpackTest: {baseDir}/src/test/groovy
+
+:apiSnippets: {baseDir}/docs-api/build/generated-snippets
+
+== What is Securatta ?
+
+TODO
