@@ -10,8 +10,62 @@
 :ratpackFiles: {baseDir}/src/ratpack
 :ratpackTest: {baseDir}/src/test/groovy
 
-:apiSnippets: {baseDir}/docs-api/build/generated-snippets
+:apiSnippets: {baseDir}/build/generated-snippets
 
 == What is Securatta ?
 
-TODO
+Securatta is a naive authentication service based on JWT
+
+== Rest API
+
+The Rest API has been documented using
+https://projects.spring.io/spring-restdocs/[Restdocs], meaning is
+generated once all API tests have been passed. That ensures that the
+API documentation is **accurate** and **up-to-date**.
+
+=== POST /api/v1/auth
+
+This endpoint is meant to be used as an authentication proxy. The call
+to this endpoint should carry an authorization header containing a
+valid token.
+
+==== Request
+
+The request should have an `Authorization` header containing the
+keyword `Bearer` an space and then the token previously obtained from
+Securatta.
+
+include::{apiSnippets}/auth-check/http-request.adoc[]
+
+==== Response
+
+If the credentials are correct then a `200` status code will be
+received along with basic user details.
+
+===== 200
+
+include::{apiSnippets}/auth-check/http-response.adoc[]
+
+=== POST /api/v1/auth/token
+
+This endpoint returns a token as exchange for valid credentials.
+
+==== Request
+
+The call should have the user's valid credentials in order to receive
+a valid token along witht the basic user details.
+
+include::{apiSnippets}/auth-token/http-request.adoc[]
+
+==== Response
+
+The response will respond with a new token, the token expiration date,
+and the user's name and username.
+
+===== 200
+
+If the credentials are correct then a `200` status code will be
+received along with basic user details including the token expiration
+timestamp.
+
+include::{apiSnippets}/auth-token/http-response.adoc[]

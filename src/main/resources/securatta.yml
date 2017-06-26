@@ -4,5 +4,5 @@ data:
   password:
 
 security:
-  secret: secret
+  secret: averysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharacters
   issuer: securatta

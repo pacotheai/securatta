@@ -27,8 +27,9 @@ repositories {
 }
 
 dependencies {
-    compile ratpack.dependency('guice')
     compile ratpack.dependency('rx')
+    compile ratpack.dependency('guice')
+    compile ratpack.dependency('remote')
 
     compile "org.codehaus.groovy:groovy-all:$groovy"
     compile "ch.qos.logback:logback-classic:$logback"
@@ -44,4 +45,6 @@ dependencies {
     testCompile "org.spockframework:spock-guice:$spock"
     testCompile "org.springframework.restdocs:spring-restdocs-restassured:$restdocs"
     testCompile "junit:junit:$junit"
+    testCompile "cglib:cglib-nodep:$cglib_nodep"
+    testCompile ratpack.dependency('remote-test')
 }

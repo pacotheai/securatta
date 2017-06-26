@@ -20,6 +20,7 @@ import securatta.util.BCryptEncoder
 @Slf4j
 class UserRepository {
 
+  static final String SECURATTA = 'securatta'
   static final String NAME = 'name'
   static final String USERNAME = 'username'
 
@@ -80,7 +81,7 @@ class UserRepository {
       (?,?)
     """
 
-    BCryptEncoder encoder = new BCryptEncoder(salt: config.security.secret)
+    BCryptEncoder encoder = new BCryptEncoder()
     String encodedPassword = encoder.encode(password)
 
     return Cassandra
@@ -121,7 +122,7 @@ class UserRepository {
     return Promise
     .value(user)
     .flatMap { User pUser ->
-      createToken(pUser.username).map { String token ->
+      createToken(pUser).map { String token ->
         new UserToken(
           user: new User(username: pUser.username),
           token: token,
@@ -137,12 +138,16 @@ class UserRepository {
    * @return
    * @since 0.1.0
    */
-  Promise<String> createToken(String username) {
+  Promise<String> createToken(User user) {
     return Promise
     .value(config.security.secret)
     .map { String secret ->
       JwtGenerator jwtGenerator = new JwtGenerator(new SecretSignatureConfiguration(secret))
-      Map<String,Object> claims = [USERNAME: username] as Map<String, Object>
+      Map<String,Object> claims = [
+        sub: SECURATTA,
+        name: user.name,
+        username: user.username,
+      ] as Map<String, Object>
 
       jwtGenerator.generate(claims)
     }

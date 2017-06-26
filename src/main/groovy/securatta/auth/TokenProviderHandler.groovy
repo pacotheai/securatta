@@ -1,5 +1,7 @@
 package securatta.auth
 
+import static ratpack.jackson.Jackson.json
+
 import ratpack.handling.Context
 import ratpack.handling.Handler
 import securatta.data.users.UserCredentials
@@ -19,14 +21,18 @@ import javax.inject.Inject
  */
 class TokenProviderHandler implements Handler {
 
-    @Inject
-    AuthService service
+  @Inject
+  AuthService service
 
-    @Override
-    void handle(Context ctx) throws Exception {
-        ctx
-        .parse(UserCredentials)
-        .flatMap(service.&authenticateUser)
-        .then(Handlers.ifNotPresent(ctx, 400))
-    }
+  @Override
+  void handle(Context ctx) throws Exception {
+    ctx
+      .parse(UserCredentials)
+      .flatMap(service.&authenticateUser)
+      .onNull(Handlers.showStatus(ctx, 400))
+      .then {
+        ctx.response.status(201)
+        ctx.render(json(it))
+      }
+  }
 }

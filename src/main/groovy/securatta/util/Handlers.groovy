@@ -1,9 +1,7 @@
 package securatta.util
 
-import static ratpack.jackson.Jackson.json
-
 import ratpack.exec.Promise
-import ratpack.func.Action
+import ratpack.func.Block
 import ratpack.handling.Context
 
 /**
@@ -13,31 +11,46 @@ import ratpack.handling.Context
  */
 class Handlers {
 
-    /**
-     * Renders the payload in case is present otherwise will use
-     * the status passed as parameter to set the response HTTP status
-     *
-     * @param context Ratpack's context needed to render the result
-     * @param status HTTP status code in case the param is not present
-     * @return an instance of type {@link Action} that can be used in a handler's `then` clause
-     * @since 0.1.0
-     */
-    static <T> Action<T> ifNotPresent(Context context, Integer status) {
-        return { T param ->
-            if (param) {
-                context.render(json(param))
-            } else {
-                context.response.status(status)
-                context.render("")
-            }
-        } as Action<T>
-    }
+  /**
+   * Uses the {@link Context} to set the respose status
+   * with the status passed as argument
+   *
+   * @param context the current Ratpack {@link Context}
+   * @param status the response status
+   * @return an {@link Block} instance that can be used
+   * in a routing expression
+   * @since 0.1.3
+   */
+  static Block showStatus(Context context, Integer status) {
+    return {
+      context.response.status(status)
+      context.render("")
+    } as Block
+  }
 
-    static Promise<String> header(Context ctx, String name) {
-        return Promise.value(ctx.request.headers.get(name))
-    }
+  /**
+   * Extracts a given header by its name from the current
+   * {@link Context}
+   *
+   * @param ctx the context we want the header from
+   * @param name the name of the header
+   * @return a {@link Promise} with the content of the header
+   * @since 0.1.0
+   */
+  static Promise<String> header(Context ctx, String name) {
+    return Promise.value(ctx.request.headers.get(name))
+  }
 
-    static String removeBearerFromToken(String token) {
-        return token - 'Bearer '
-    }
+  /**
+   * Utility function to remove the 'Bearer ' literal from
+   * the authorization header in order to get only the token
+   * string
+   *
+   * @param token an authorization header content
+   * @return only the token string
+   * @since 0.1.0
+   */
+  static String removeBearerFromToken(String token) {
+    return token - 'Bearer '
+  }
 }
