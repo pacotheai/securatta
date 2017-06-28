@@ -1,5 +1,36 @@
 apply plugin: 'org.asciidoctor.convert'
 
+task generateDocumentation() {
+  dependsOn 'groovydoc'
+  dependsOn 'asciidoctor'
+  dependsOn 'cloverGenerateReport'
+
+  doLast {
+    copy {
+      from "$buildDir/asciidoc/html5"
+      into "$buildDir/site"
+    }
+  }
+}
+
+sourceSets {
+  groovydoc {
+    resources {
+      srcDir folder_groovydoc
+    }
+  }
+}
+
+groovydoc {
+  link 'https://docs.oracle.com/javase/8/docs/api/', 'java'
+  link 'http://docs.groovy-lang.org/latest/html/api/', 'groovy', 'org.codehaus.groovy'
+  link 'http://pacotheai.github.io/securatta/javadocs', 'securatta'
+
+  destinationDir = file("$buildDir/site/api")
+  classpath = sourceSets.groovydoc.output + classpath
+  overviewText = project.resources.text.fromFile('src/docs/groovydoc/overview.html')
+}
+
 /**
  * API-DOCS
  */
@@ -9,7 +40,7 @@ ext {
 
 asciidoctor {
   requires 'asciidoctor-diagram'
-  sourceDir = file('src/docs')
+  sourceDir = file(folder_asciidoc)
   attributes 'source-highlighter'  :  'prettify',
              'toc'                 :  'left',
              'icons'               :  'font',

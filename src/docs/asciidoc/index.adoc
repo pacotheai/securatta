@@ -2,7 +2,7 @@
 :revnumber: {releaseVersion}
 :numbered:
 :imagesDir: images/
-:baseDir: ../..
+:baseDir: ../../..
 
 :ratpackMain: {baseDir}/src/main/groovy
 :ratpackResources: {baseDir}/src/main/resources
@@ -13,3 +13,5 @@
 include::intro.adoc[]
 
 include::api.adoc[]
+
+include::development.adoc[]
