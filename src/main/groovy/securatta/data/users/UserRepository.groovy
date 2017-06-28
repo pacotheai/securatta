@@ -83,8 +83,7 @@ class UserRepository {
       (?,?)
     """
 
-    BCryptEncoder encoder = new BCryptEncoder()
-    String encodedPassword = encoder.encode(password, config.security.salt)
+    String encodedPassword = BCryptEncoder.encode(password, config.security.salt)
 
     return Cassandra
     .executeAsync(cluster.connect(), stmt, username, encodedPassword)
@@ -143,8 +142,7 @@ class UserRepository {
   }
 
   UserCredentials compareCredentials(UserCredentials trusted, UserCredentials untrusted) {
-    BCryptEncoder encoder = new BCryptEncoder()
-    String untrustedPassword = encoder.encode(untrusted.password, config.security.salt)
+    String untrustedPassword = BCryptEncoder.encode(untrusted.password, config.security.salt)
 
     if (trusted.password == untrustedPassword) {
       return trusted
@@ -177,7 +175,7 @@ class UserRepository {
       createToken(pUser).map { String token ->
         new UserToken(
           user: new User(name: pUser.name, username: pUser.username),
-          token: token
+          token: token,
         )
       }
     }
