@@ -1,0 +1,93 @@
+== Rest API
+
+The Rest API has been documented using
+https://projects.spring.io/spring-restdocs/[Restdocs], meaning is
+generated once all API tests have been passed. That ensures that the
+API documentation is **accurate** and **up-to-date**.
+
+=== /api/v1/auth/token
+
+This endpoint returns a token as exchange for valid credentials. The
+resulting token could be used to authenticate the user in subsequent
+calls.
+
+==== 200
+
+===== Request
+
+The call should have the user's valid credentials in order to receive
+a valid token along witht the basic user details.
+
+.curl
+include::{apiSnippets}/auth-token-200/curl-request.adoc[]
+
+.http
+include::{apiSnippets}/auth-token-200/http-request.adoc[]
+
+===== Response
+
+If the credentials are correct then a `200` status code will be
+received along with basic user details including the token expiration
+timestamp.
+
+.response
+include::{apiSnippets}/auth-token-200/http-response.adoc[]
+
+==== 401
+
+Sometimes the request may not have valid credentials or may not have
+credentials at all.
+
+===== Request
+
+Passing an invalid username or password:
+
+.curl
+include::{apiSnippets}/auth-token-401/curl-request.adoc[]
+
+.http
+include::{apiSnippets}/auth-token-401/http-request.adoc[]
+
+===== Response
+
+The response in this case returns a `401` status code and no body
+
+.response
+include::{apiSnippets}/auth-token-401/http-response.adoc[]
+
+=== /api/v1/auth/check
+
+This enpoint is another way of authentication, but instead of using
+username and password, you can use a JWT token.
+
+==== 200
+
+===== Request
+
+The request should have an `Authorization` header containing the
+keyword `Bearer` an space and then the token previously obtained from
+Securatta.
+
+include::{apiSnippets}/auth-check-200/http-request.adoc[]
+
+===== Response
+
+If the credentials are correct then a `200` status code will be
+received along with basic user details.
+
+include::{apiSnippets}/auth-check-200/http-response.adoc[]
+
+==== 401
+
+The authentication fails every time the user provides an invalid token
+or if the authorization token is not present at all.
+
+===== Request
+
+Providing an empty authorization header:
+
+include::{apiSnippets}/auth-check-401/http-request.adoc[]
+
+===== Response
+
+include::{apiSnippets}/auth-check-401/http-response.adoc[]

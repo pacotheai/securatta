@@ -1,0 +1,4 @@
+== What is Securatta ?
+
+Securatta is, at the moment, a naive authentication service based on
+JWT

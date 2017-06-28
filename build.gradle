@@ -24,6 +24,9 @@ apply from: 'gradle/clover.gradle'
 repositories {
     jcenter()
     mavenCentral()
+    maven {
+      url 'https://repo.spring.io/release'
+    }
 }
 
 dependencies {
@@ -40,6 +43,7 @@ dependencies {
     compile "com.datastax.cassandra:cassandra-driver-core:$cassandra_datastax"
 
     clover "org.openclover:clover:$clover"
+    asciidoctor "io.spring.asciidoctor:spring-asciidoctor-extensions:$asciidoctor_ext"
 
     testCompile "org.spockframework:spock-core:$spock"
     testCompile "org.spockframework:spock-guice:$spock"
