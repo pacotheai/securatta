@@ -1,8 +1,5 @@
 package securatta.data.users
 
-import org.pac4j.jwt.profile.JwtGenerator
-import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator
-import org.pac4j.jwt.config.signature.SecretSignatureConfiguration
 import com.datastax.driver.core.Cluster
 import com.datastax.driver.core.Row
 import groovy.util.logging.Slf4j
@@ -10,7 +7,7 @@ import ratpack.exec.Promise
 import javax.inject.Inject
 import securatta.Config
 import securatta.data.Cassandra
-import securatta.util.BCryptEncoder
+import securatta.util.Crypto
 import com.datastax.driver.core.ResultSet
 
 /**
@@ -83,7 +80,7 @@ class UserRepository {
       (?,?)
     """
 
-    String encodedPassword = BCryptEncoder.encode(password, config.security.salt)
+    String encodedPassword = Crypto.Blowfish.encode(password, config.security.salt)
 
     return Cassandra
     .executeAsync(cluster.connect(), stmt, username, encodedPassword)
@@ -141,10 +138,10 @@ class UserRepository {
     }
   }
 
-  UserCredentials compareCredentials(UserCredentials trusted, UserCredentials untrusted) {
-    String untrustedPassword = BCryptEncoder.encode(untrusted.password, config.security.salt)
+  static UserCredentials compareCredentials(UserCredentials trusted, UserCredentials untrusted) {
+    Boolean matches = Crypto.Blowfish.matches(untrusted.password, trusted.password)
 
-    if (trusted.password == untrustedPassword) {
+    if (matches) {
       return trusted
     }
 
@@ -191,17 +188,10 @@ class UserRepository {
     assert user, "user required"
 
     return Promise
-    .value(config.security.secret)
-    .map { String secret ->
-      JwtGenerator jwtGenerator = new JwtGenerator(new SecretSignatureConfiguration(secret))
-      Map<String,Object> claims = [
-        sub: SECURATTA,
-        name: user.name,
-        username: user.username,
-      ] as Map<String, Object>
-
-      jwtGenerator.generate(claims)
-    }
+      .value(sub: SECURATTA, name: user.name, username: user.username)
+      .map { Map<String,Object> claims ->
+        Crypto.JWT.generateToken(claims, config.security.secret)
+      }
   }
 
   /**
@@ -213,9 +203,7 @@ class UserRepository {
     return Promise
       .value(config.security.secret)
       .map { String secret ->
-        JwtAuthenticator authenticator = new JwtAuthenticator()
-        authenticator.addSignatureConfiguration(new SecretSignatureConfiguration(secret))
-        authenticator.validateTokenAndGetClaims(token)
+        Crypto.JWT.verifyTokenAndGetClaims(token, secret)
       }.map { Map claims ->
         new User(username: "${claims.username}", name: "${claims.name}")
       }.map { User user ->
