@@ -1,12 +1,9 @@
 package securatta.auth
 
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestHeaders
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
-import static org.springframework.restdocs.snippet.Attributes.key
-import static org.springframework.restdocs.snippet.Attributes.attributes
 
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.response.Response

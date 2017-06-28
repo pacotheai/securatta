@@ -5,8 +5,6 @@ import static ratpack.jackson.Jackson.json
 import ratpack.handling.Context
 import ratpack.handling.Handler
 import securatta.data.users.UserCredentials
-import securatta.util.Handlers
-
 import javax.inject.Inject
 
 /**
