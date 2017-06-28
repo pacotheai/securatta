@@ -1,7 +1,6 @@
 package securatta.util
 
 import ratpack.exec.Promise
-import ratpack.func.Block
 import ratpack.handling.Context
 
 /**
@@ -10,23 +9,6 @@ import ratpack.handling.Context
  * @since 0.1.0
  */
 class Handlers {
-
-  /**
-   * Uses the {@link Context} to set the respose status
-   * with the status passed as argument
-   *
-   * @param context the current Ratpack {@link Context}
-   * @param status the response status
-   * @return an {@link Block} instance that can be used
-   * in a routing expression
-   * @since 0.1.3
-   */
-  static Block showStatus(Context context, Integer status) {
-    return {
-      context.response.status(status)
-      context.render("")
-    } as Block
-  }
 
   /**
    * Extracts a given header by its name from the current
