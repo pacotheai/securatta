@@ -26,7 +26,7 @@ class TokenProviderHandlerSpec extends ApiDocumentationSpec {
     when: 'asking for a new token'
     Response response = RestAssured
       .given(baseRequestSpec)
-      .filter(authenticationDocSpec)
+      .filter(authenticationSpecFor(200))
       .body('{"username":"username", "password":"password"}')
       .contentType('application/json')
       .accept('application/json')
@@ -37,8 +37,23 @@ class TokenProviderHandlerSpec extends ApiDocumentationSpec {
     response.statusCode == 201
   }
 
-  RestDocumentationFilter getAuthenticationDocSpec() {
-    return document("auth-token",
+  void 'providing bad credentials'() {
+    when: 'asking for a new token'
+    Response response = RestAssured
+      .given(baseRequestSpec)
+      .filter(authenticationSpecFor(401))
+      .body('{"username":"unknown", "password":"whatever"}')
+      .contentType('application/json')
+      .accept('application/json')
+      .when()
+      .post("${app.address}api/v1/auth/token")
+
+    then: 'the status code should be accepted'
+    response.statusCode == 401
+  }
+
+  RestDocumentationFilter authenticationSpecFor(Integer code) {
+    return document("auth-token-$code",
       requestPreprocessors,
       responsePreprocessors,
       requestFields(

@@ -25,8 +25,10 @@ class TokenAuthenticationHandler implements Handler {
       .header(ctx, 'Authorization')
       .map(Handlers.&removeBearerFromToken)
       .flatMap(service.&authenticateToken)
-      .onNull(Handlers.showStatus(ctx, 401))
-      .then {
+      .onError { th ->
+        ctx.response.status(401)
+        ctx.render("")
+      }.then {
         ctx.response.status(200)
         ctx.render(json(it))
       }

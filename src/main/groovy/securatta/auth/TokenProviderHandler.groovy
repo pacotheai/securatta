@@ -29,8 +29,10 @@ class TokenProviderHandler implements Handler {
     ctx
       .parse(UserCredentials)
       .flatMap(service.&authenticateUser)
-      .onNull(Handlers.showStatus(ctx, 400))
-      .then {
+      .onError { th ->
+        ctx.response.status(401)
+        ctx.render("")
+      }.then {
         ctx.response.status(201)
         ctx.render(json(it))
       }

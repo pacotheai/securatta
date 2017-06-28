@@ -32,7 +32,7 @@ class TokenAuthenticationHandlerSpec extends ApiDocumentationSpec {
     when: "authenticating with the token"
     Response response = RestAssured
       .given(baseRequestSpec)
-      .filter(authenticationDocSpec)
+      .filter(authenticationSpecFor(200))
       .header(tokenHeader)
       .contentType('application/json')
       .accept('application/json')
@@ -43,8 +43,23 @@ class TokenAuthenticationHandlerSpec extends ApiDocumentationSpec {
     response.statusCode == 200
   }
 
-  RestDocumentationFilter getAuthenticationDocSpec() {
-    return document("auth-check",
+  void 'check failing authentication [NO TOKEN]'() {
+    when: "authenticating with the token"
+    Response response = RestAssured
+      .given(baseRequestSpec)
+      .filter(authenticationSpecFor(401))
+      .header("Authorization", "")
+      .contentType('application/json')
+      .accept('application/json')
+      .when()
+      .post("${app.address}api/v1/auth/check")
+
+    then: "authentication is correct"
+    response.statusCode == 401
+  }
+
+  RestDocumentationFilter authenticationSpecFor(Integer code) {
+    return document("auth-check-$code",
       requestPreprocessors,
       responsePreprocessors,
       requestHeaders(

@@ -4,5 +4,6 @@ data:
   password:
 
 security:
+  salt: $2a$10$nYQs19hlxNAb9sQaTHKXyu
   secret: averysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharactersaverysecretwithalotofcharacters
   issuer: securatta

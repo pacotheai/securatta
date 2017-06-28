@@ -11,6 +11,7 @@ import javax.inject.Inject
 import securatta.Config
 import securatta.data.Cassandra
 import securatta.util.BCryptEncoder
+import com.datastax.driver.core.ResultSet
 
 /**
  * Repository using Cassandra database to store user related data
@@ -23,6 +24,7 @@ class UserRepository {
   static final String SECURATTA = 'securatta'
   static final String NAME = 'name'
   static final String USERNAME = 'username'
+  static final String PASSWORD = 'password'
 
   /**
    * Cassandra cluster connection
@@ -82,7 +84,7 @@ class UserRepository {
     """
 
     BCryptEncoder encoder = new BCryptEncoder()
-    String encodedPassword = encoder.encode(password)
+    String encodedPassword = encoder.encode(password, config.security.salt)
 
     return Cassandra
     .executeAsync(cluster.connect(), stmt, username, encodedPassword)
@@ -102,14 +104,64 @@ class UserRepository {
     String stmt = "SELECT * FROM securatta.user WHERE username = ?"
 
     return Cassandra
-    .executeAsync(cluster.connect(), stmt, username)
-    .map(Cassandra.&singleRow)
-    .map(UserRepository.&toUser)
+      .executeAsync(cluster.connect(), stmt, username)
+      .map { ResultSet rs ->
+        if (!rs.isEmpty()) {
+          return toUser(rs.one())
+        }
+      }
+  }
+
+  /**
+   * Searchs for a given user by username
+   *
+   * @param username the user's username
+   * @return a {@link User} promise
+   * @since 0.1.3
+   */
+  Promise<UserCredentials> findCredentialsByUsername(String username) {
+    String stmt = "SELECT * FROM securatta.user_credentials WHERE username = ?"
+
+    return Cassandra
+      .executeAsync(cluster.connect(), stmt, username)
+      .map { ResultSet rs ->
+        if (!rs.isEmpty()) {
+          return toUserCredentials(rs.one())
+        }
+    }
+  }
+
+  Promise<UserToken> checkCredentials(final UserCredentials untrusted) {
+    return findCredentialsByUsername(untrusted.username)
+    .map { UserCredentials trusted ->
+      compareCredentials(trusted, untrusted)
+    }.flatMap { UserCredentials trusted ->
+      findByUsername(trusted.username)
+    }.flatMap { User user ->
+      createUserToken(user)
+    }
+  }
+
+  UserCredentials compareCredentials(UserCredentials trusted, UserCredentials untrusted) {
+    BCryptEncoder encoder = new BCryptEncoder()
+    String untrustedPassword = encoder.encode(untrusted.password, config.security.salt)
+
+    if (trusted.password == untrustedPassword) {
+      return trusted
+    }
+
+    throw new IllegalStateException('Bad credentials')
   }
 
   static User toUser(Row row) {
     return new User(
       name: row.getString(NAME), username: row.getString(USERNAME),
+    )
+  }
+
+  static UserCredentials toUserCredentials(Row row) {
+    return new UserCredentials(
+      username: row.getString(USERNAME), password: row.getString(PASSWORD),
     )
   }
 
@@ -124,9 +176,8 @@ class UserRepository {
     .flatMap { User pUser ->
       createToken(pUser).map { String token ->
         new UserToken(
-          user: new User(username: pUser.username),
-          token: token,
-          expirationDate: new Date(),
+          user: new User(name: pUser.name, username: pUser.username),
+          token: token
         )
       }
     }
@@ -139,6 +190,8 @@ class UserRepository {
    * @since 0.1.0
    */
   Promise<String> createToken(User user) {
+    assert user, "user required"
+
     return Promise
     .value(config.security.secret)
     .map { String secret ->
@@ -160,16 +213,15 @@ class UserRepository {
    */
   Promise<UserToken> verifyToken(String token) {
     return Promise
-    .value(config.security.secret)
-    .map { String secret ->
-      new JwtAuthenticator().with {
-        addSignatureConfiguration(new SecretSignatureConfiguration(secret))
-        validateTokenAndGetClaims(token)
+      .value(config.security.secret)
+      .map { String secret ->
+        JwtAuthenticator authenticator = new JwtAuthenticator()
+        authenticator.addSignatureConfiguration(new SecretSignatureConfiguration(secret))
+        authenticator.validateTokenAndGetClaims(token)
+      }.map { Map claims ->
+        new User(username: "${claims.username}", name: "${claims.name}")
+      }.map { User user ->
+        new UserToken(user: user, token: token)
       }
-    }.map { Map claims ->
-      new User(username: "${claims.username}", name: "${claims.name}")
-    }.map { User user ->
-      new UserToken(user: user, token: token)
-    }
   }
 }
