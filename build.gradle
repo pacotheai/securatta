@@ -30,7 +30,6 @@ repositories {
 }
 
 dependencies {
-    compile ratpack.dependency('rx')
     compile ratpack.dependency('guice')
     compile ratpack.dependency('remote')
 
