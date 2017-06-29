@@ -1,25 +1,8 @@
 apply plugin: 'org.asciidoctor.convert'
 
-task generateSite() {
-  group "documentation"
-  description "generates Securatta site (asciidoc, groovydoc and clover documentation)"
-
-  doLast {
-    copy {
-      from "$buildDir/docs"
-      into "$buildDir/site"
-    }
-    copy {
-      from "$buildDir/asciidoc/html5"
-      into "$buildDir/site"
-    }
-    copy {
-      from "$buildDir/reports/clover/html"
-      into "$buildDir/site/clover"
-    }
-  }
-}
-
+/**
+ * GROOVYDOC
+ */
 sourceSets {
   groovydoc {
     resources {
@@ -38,7 +21,7 @@ groovydoc {
 }
 
 /**
- * API-DOCS
+ * ASCIIDOC DOCUMENTATION
  */
 ext {
 	snippetsDir = file('build/generated-snippets')
@@ -53,4 +36,27 @@ asciidoctor {
              'toclevels'           :  3,
              'snippets'            : snippetsDir,
              'releaseVersion'      : version
+}
+
+/**
+ * DOCUMENTATION TASK NEEDED PRIOR TO PUBLISH ALL DOCUMENTATION TO
+ * GH_PAGES
+ */
+task generateSite() {
+  group "documentation"
+  description "generates Securatta site (asciidoc, groovydoc and clover documentation)"
+  doLast {
+    copy {
+      from "$buildDir/docs"
+      into "$buildDir/site"
+    }
+    copy {
+      from "$buildDir/asciidoc/html5"
+      into "$buildDir/site"
+    }
+    copy {
+      from "$buildDir/reports/clover/html"
+      into "$buildDir/site/clover"
+    }
+  }
 }
