@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+function usage {
+    echo "USAGE: $0 [add_ssh_id | change_git_remote | last_tag]"
+}
+
+function get_ssh_remote_uri {
+    GIT_VERBOSE=$(git remote --verbose | sed -n '2p')
+    URI_HTTP=$(echo $GIT_VERBOSE | sed 's/^.* \(.*\) .*$/\1/')
+    URI_ROOT=$(echo $URI_HTTP | cut -d'@' -f 2)
+    URI_PATH=$(echo $URI_ROOT | sed '0,/RE/s/\//:/')
+
+    echo "git@$URI_PATH"
+}
+
+function change_git_remote {
+    if [[ -z "$AGENT_NAME" ]]; then
+       echo "ERROR: No agent name found"
+    else
+        if [[ -z "$AGENT_EMAIL" ]]; then
+            echo "ERROR: No agent email found"
+        else
+            git config user.name $AGENT_NAME
+            git config user.email $AGENT_EMAIL
+            git remote set-url origin $(get_ssh_remote_uri)
+        fi
+    fi
+}
+
+function add_ssh_id {
+    if [[ -z "$AGENT_PRIV_KEY" ]]; then
+       echo "ERROR: No agent private key found"
+    else
+        mkdir -p ~/.ssh &&
+            (echo "$AGENT_PRIV_KEY" > ~/.ssh/id_rsa) &&
+            (echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config)
+    fi
+}
+
+function last_tag {
+    git describe --abbrev=0 --tags
+}
+
+case $1 in
+    change_git_remote)
+        change_git_remote
+        ;;
+    add_ssh_id)
+        add_ssh_id
+        ;;
+    last_tag)
+        last_tag
+        ;;
+    *)
+        usage
+        ;;
+esac

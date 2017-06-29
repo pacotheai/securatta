@@ -34,5 +34,3 @@ COPY files/dev-entrypoint.sh .
 RUN sudo chmod +x /home/user/dev-entrypoint.sh
 
 EXPOSE 5050
-
-ENTRYPOINT ["/home/user/dev-entrypoint.sh"]

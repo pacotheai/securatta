@@ -1,10 +1,31 @@
 sudo: required
 
+# This workflow only makes sense for master branch
+branches:
+  only:
+    - master
+
 services:
   - docker
 
-before_install:
-  - docker build -t securatta/dev docker/dev/
+before_script:
+  # Set ssh remote repo to be able to push tags
+  - ./travisw change_git_remote
 
 script:
-  - docker run securatta/dev /bin/sh -c "cd ws; ./gradlew build"
+  # Build and test inside the development Docker image
+  - docker-compose run -d --rm --name securatta -p 5050:5050 --entrypoint "tail -f ws/build.gradle" securatta
+  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew build"
+
+after_sucess:
+  # Tag new version
+  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew release"
+
+  # Update project site
+  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew groovydoc ascii cloverGenerateReport generateSite gitPublishPush"
+
+  # Deploy Docker image to Bintray
+  - export SECURATTA_VERSION=$(./travisw last_tag)
+  - docker login -u $BR_USERNAME -p $BR_API_KEY pacotheai-docker-public.bintray.io
+  - docker tag pacotheai-docker-public.bintray.io/securatta pacotheai-docker-public.bintray.io/securatta:$SECURATTA_VERSION
+  - docker push pacotheai-docker-public.bintray.io/securatta:$SECURATTA_VERSION

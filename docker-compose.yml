@@ -11,14 +11,16 @@ services:
       volumes:
         - dbauth-data:/dataauth
     securatta:
-      build: ./dev/
-      image: paco/securatta
+      build: ./docker
+      image: pacotheai-docker-public.bintray.io/securatta
       ports:
         - "5050:5050"
       links:
         - cassandra:cassandra
+      entrypoint:
+        - /home/user/dev-entrypoint.sh
       volumes:
-        - $PROJECT:/home/user/ws
+        - $PWD:/home/user/ws
         - $HOME/.m2:/home/user/.m2
         - $HOME/.gradle:/home/user/.gradle
         - $HOME/.groovy:/home/user/.groovy
