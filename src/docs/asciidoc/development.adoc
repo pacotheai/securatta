@@ -1,5 +1,5 @@
 == Development
 
-- Source code: https://pacotheai.github.io/securatta
-- Groovydoc: https://pacotheai.github.io/securatta/api
-- Code coverage: https://pacotheai.github.io/securatta/coverage
+- Source code: https://github.com/pacotheai/securatta
+- Groovydoc: https://pacotheai.github.io/securatta/groovydoc/index.html
+- Code coverage: https://pacotheai.github.io/securatta/clover/index.html

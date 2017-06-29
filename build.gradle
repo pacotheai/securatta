@@ -10,6 +10,7 @@ buildscript {
         classpath "com.bmuschko:gradle-clover-plugin:$clover_plugin"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:$asciidoctor"
         classpath "org.asciidoctor:asciidoctorj-diagram:$asciidoctor_diagram"
+        classpath "org.ajoberstar:gradle-git-publish:$gradle_git"
     }
 }
 
@@ -20,6 +21,7 @@ apply from: 'gradle/docs.gradle'
 apply from: 'gradle/compiler.gradle'
 apply from: 'gradle/codenarc.gradle'
 apply from: 'gradle/clover.gradle'
+apply from: 'gradle/ghpages.gradle'
 
 repositories {
     jcenter()

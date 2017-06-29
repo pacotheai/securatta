@@ -11,7 +11,7 @@ task generateSite() {
   doLast {
     copy {
       from "$buildDir/docs"
-      into "$buildDir/site/groovydoc"
+      into "$buildDir/site"
     }
     copy {
       from "$buildDir/asciidoc/html5"

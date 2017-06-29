@@ -1,0 +1,23 @@
+apply plugin: "org.ajoberstar.git-publish"
+
+task setAuthentication() {
+  doLast {
+    System.setProperty('org.ajoberstar.grgit.auth.username', githubToken)
+  }
+}
+
+gitPublish {
+  repoUri = 'https://github.com/pacotheai/securatta.git'
+  branch = 'gh-pages'
+
+  contents {
+    from file('build/site')
+  }
+
+  commitMessage = "Released version ${version}"
+}
+
+gitPublishPush {
+  dependsOn 'setAuthentication'
+  dependsOn 'generateSite'
+}
