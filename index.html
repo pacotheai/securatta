@@ -556,29 +556,13 @@ calls.</p>
 <p>The call should have the user&#8217;s valid credentials in order to receive
 a valid token along witht the basic user details.</p>
 </div>
-<div class="listingblock">
+<div class="paragraph">
 <div class="title">curl</div>
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-bash" data-lang="bash">$ curl 'http://localhost:5050/api/v1/auth/token' -i -X POST -H 'Accept: application/json' -H 'Content-Type: application/json; charset=UTF-8' -d '{
-  "username" : "username",
-  "password" : "password"
-}'</code></pre>
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-token-200/curl-request.adoc[]</p>
 </div>
-</div>
-<div class="listingblock">
+<div class="paragraph">
 <div class="title">http</div>
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/auth/token HTTP/1.1
-Accept: application/json
-Content-Type: application/json; charset=UTF-8
-Host: localhost:5050
-Content-Length: 56
-
-{
-  "username" : "username",
-  "password" : "password"
-}</code></pre>
-</div>
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-token-200/http-request.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
@@ -588,24 +572,9 @@ Content-Length: 56
 received along with basic user details including the token expiration
 timestamp.</p>
 </div>
-<div class="listingblock">
+<div class="paragraph">
 <div class="title">response</div>
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-content-type: application/json
-content-encoding: gzip
-transfer-encoding: chunked
-Content-Length: 251
-
-{
-  "user" : {
-    "name" : "john",
-    "username" : "username"
-  },
-  "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWN1cmF0dGEiLCJuYW1lIjoiam9obiIsInVzZXJuYW1lIjoidXNlcm5hbWUifQ.7J7CVZsfsAMGeH7Eh_sFl7CTAvDkMXbHd_An_LsAKXw",
-  "expirationDate" : null
-}</code></pre>
-</div>
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-token-200/http-response.adoc[]</p>
 </div>
 </div>
 </div>
@@ -620,29 +589,13 @@ credentials at all.</p>
 <div class="paragraph">
 <p>Passing an invalid username or password:</p>
 </div>
-<div class="listingblock">
+<div class="paragraph">
 <div class="title">curl</div>
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-bash" data-lang="bash">$ curl 'http://localhost:5050/api/v1/auth/token' -i -X POST -H 'Accept: application/json' -H 'Content-Type: application/json; charset=UTF-8' -d '{
-  "username" : "unknown",
-  "password" : "whatever"
-}'</code></pre>
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-token-401/curl-request.adoc[]</p>
 </div>
-</div>
-<div class="listingblock">
+<div class="paragraph">
 <div class="title">http</div>
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/auth/token HTTP/1.1
-Accept: application/json
-Content-Type: application/json; charset=UTF-8
-Host: localhost:5050
-Content-Length: 55
-
-{
-  "username" : "unknown",
-  "password" : "whatever"
-}</code></pre>
-</div>
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-token-401/http-request.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
@@ -650,14 +603,9 @@ Content-Length: 55
 <div class="paragraph">
 <p>The response in this case returns a <code>401</code> status code and no body</p>
 </div>
-<div class="listingblock">
+<div class="paragraph">
 <div class="title">response</div>
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 401 Unauthorized
-content-type: text/plain;charset=UTF-8
-content-encoding: gzip
-transfer-encoding: chunked</code></pre>
-</div>
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-token-401/http-response.adoc[]</p>
 </div>
 </div>
 </div>
@@ -677,14 +625,8 @@ username and password, you can use a JWT token.</p>
 keyword <code>Bearer</code> an space and then the token previously obtained from
 Securatta.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/auth/check HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWN1cmF0dGEiLCJuYW1lIjoiam9obiIsInVzZXJuYW1lIjoidXNlcm5hbWUifQ.7J7CVZsfsAMGeH7Eh_sFl7CTAvDkMXbHd_An_LsAKXw
-Accept: application/json
-Content-Type: application/json; charset=UTF-8
-Host: localhost:5050</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-check-200/http-request.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
@@ -693,23 +635,8 @@ Host: localhost:5050</code></pre>
 <p>If the credentials are correct then a <code>200</code> status code will be
 received along with basic user details.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-content-type: application/json
-content-encoding: gzip
-transfer-encoding: chunked
-Content-Length: 251
-
-{
-  "user" : {
-    "name" : "john",
-    "username" : "username"
-  },
-  "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWN1cmF0dGEiLCJuYW1lIjoiam9obiIsInVzZXJuYW1lIjoidXNlcm5hbWUifQ.7J7CVZsfsAMGeH7Eh_sFl7CTAvDkMXbHd_An_LsAKXw",
-  "expirationDate" : null
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-check-200/http-response.adoc[]</p>
 </div>
 </div>
 </div>
@@ -724,25 +651,14 @@ or if the authorization token is not present at all.</p>
 <div class="paragraph">
 <p>Providing an empty authorization header:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/auth/check HTTP/1.1
-Authorization:
-Accept: application/json
-Content-Type: application/json; charset=UTF-8
-Host: localhost:5050</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-check-401/http-request.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_response_4">Response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 401 Unauthorized
-content-type: text/plain;charset=UTF-8
-content-encoding: gzip
-transfer-encoding: chunked</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in api.adoc - include::../../../build/generated-snippets/auth-check-401/http-response.adoc[]</p>
 </div>
 </div>
 </div>
@@ -755,13 +671,13 @@ transfer-encoding: chunked</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Source code: <a href="https://pacotheai.github.io/securatta" class="bare">https://pacotheai.github.io/securatta</a></p>
+<p>Source code: <a href="https://github.com/pacotheai/securatta" class="bare">https://github.com/pacotheai/securatta</a></p>
 </li>
 <li>
-<p>Groovydoc: <a href="https://pacotheai.github.io/securatta/api" class="bare">https://pacotheai.github.io/securatta/api</a></p>
+<p>Groovydoc: <a href="https://pacotheai.github.io/securatta/groovydoc/index.html" class="bare">https://pacotheai.github.io/securatta/groovydoc/index.html</a></p>
 </li>
 <li>
-<p>Code coverage: <a href="https://pacotheai.github.io/securatta/coverage" class="bare">https://pacotheai.github.io/securatta/coverage</a></p>
+<p>Code coverage: <a href="https://pacotheai.github.io/securatta/clover/index.html" class="bare">https://pacotheai.github.io/securatta/clover/index.html</a></p>
 </li>
 </ul>
 </div>
