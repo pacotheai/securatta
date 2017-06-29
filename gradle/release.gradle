@@ -1,3 +1,4 @@
+apply plugin: 'nebula.nebula-release'
 apply plugin: "org.ajoberstar.git-publish"
 
 task setAuthentication() {
