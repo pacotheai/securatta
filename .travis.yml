@@ -1,10 +1,11 @@
 sudo: required
 
 services:
-  - docker
-
-before_install:
-  - docker build -t securatta/dev docker/dev/
+- docker
 
 script:
-  - docker run securatta/dev /bin/sh -c "cd ws; ./gradlew build"
+- docker-compose run -d --rm --name securatta -p 5050:5050 --entrypoint "tail -f ws/build.gradle" securatta
+- docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew build groovydoc ascii cloverGenerateReport generateSite"
+- docker login -u $BR_USERNAME -p $BR_API_KEY pacotheai-docker-public.bintray.io
+- docker tag pacotheai-docker-public.bintray.io/securatta pacotheai-docker-public.bintray.io/securatta:0.1.3
+- docker push pacotheai-docker-public.bintray.io/securatta:0.1.3
