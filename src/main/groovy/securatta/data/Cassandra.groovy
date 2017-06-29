@@ -8,8 +8,6 @@ import ratpack.exec.Downstream
 import ratpack.exec.Promise
 import ratpack.exec.Upstream
 
-import java.util.function.Predicate
-
 /**
  * Cassandra related functions
  *
