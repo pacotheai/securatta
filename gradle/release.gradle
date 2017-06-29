@@ -1,6 +1,9 @@
 apply plugin: 'nebula.nebula-release'
 apply plugin: "org.ajoberstar.git-publish"
 
+/**
+ * GH_PAGES PUBLICATION
+ */
 task setAuthentication() {
   doLast {
     System.setProperty('org.ajoberstar.grgit.auth.username', githubToken)
@@ -21,4 +24,14 @@ gitPublish {
 gitPublishPush {
   dependsOn 'setAuthentication'
   dependsOn 'generateSite'
+}
+
+/**
+ * DOCKER PRO IMAGE ARTIFACTS
+ */
+task prepareDocker() {
+  copy {
+    from "$buildDir/libs/securatta-${version}-all.jar"
+    into "$buildDir/docker"
+  }
 }

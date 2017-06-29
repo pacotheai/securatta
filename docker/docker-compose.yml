@@ -11,7 +11,7 @@ services:
       volumes:
         - dbauth-data:/dataauth
     securatta:
-      build: ./securatta/
+      build: ./dev/
       image: paco/securatta
       ports:
         - "5050:5050"

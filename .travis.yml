@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t securatta/dev docker/dev/
+
+script:
+  - docker run securatta/dev /bin/sh -c "cd ws; ./gradlew build"
