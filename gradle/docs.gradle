@@ -4,10 +4,6 @@ task generateSite() {
   group "documentation"
   description "generates Securatta site (asciidoc, groovydoc and clover documentation)"
 
-  dependsOn 'groovydoc'
-  dependsOn 'asciidoctor'
-  dependsOn 'cloverGenerateReport'
-
   doLast {
     copy {
       from "$buildDir/docs"
