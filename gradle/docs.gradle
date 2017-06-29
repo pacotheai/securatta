@@ -1,14 +1,25 @@
 apply plugin: 'org.asciidoctor.convert'
 
-task generateDocumentation() {
+task generateSite() {
+  group "documentation"
+  description "generates Securatta site (asciidoc, groovydoc and clover documentation)"
+
   dependsOn 'groovydoc'
   dependsOn 'asciidoctor'
   dependsOn 'cloverGenerateReport'
 
   doLast {
     copy {
+      from "$buildDir/docs"
+      into "$buildDir/site/groovydoc"
+    }
+    copy {
       from "$buildDir/asciidoc/html5"
       into "$buildDir/site"
+    }
+    copy {
+      from "$buildDir/reports/clover/html"
+      into "$buildDir/site/clover"
     }
   }
 }
@@ -26,7 +37,6 @@ groovydoc {
   link 'http://docs.groovy-lang.org/latest/html/api/', 'groovy', 'org.codehaus.groovy'
   link 'http://pacotheai.github.io/securatta/javadocs', 'securatta'
 
-  destinationDir = file("$buildDir/site/api")
   classpath = sourceSets.groovydoc.output + classpath
   overviewText = project.resources.text.fromFile('src/docs/groovydoc/overview.html')
 }
