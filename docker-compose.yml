@@ -26,6 +26,8 @@ services:
         - $HOME/.groovy:/home/user/.groovy
         - $HOME/.sdkman/archives:/home/user/.sdkman/archives
         - $HOME/.sdkman/candidates:/home/user/.sdkman/candidates
+      environment:
+        - GH_TOKEN=$GH_TOKEN
 
 volumes:
   dbauth-data:

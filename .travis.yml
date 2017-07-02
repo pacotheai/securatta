@@ -8,21 +8,16 @@ branches:
 services:
   - docker
 
-before_script:
-  # Set ssh remote repo to be able to push tags
-  - ./travisw change_git_remote
-  - ./travisw add_ssh_id
-
 script:
   # Build and test inside the development Docker image
   - docker-compose run -d --rm --name securatta -p 5050:5050 --entrypoint "tail -f ws/build.gradle" securatta
   - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew build"
 
   # Tag new version
-  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew release"
+  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew --stacktrace release"
 
   # Update project site
-  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew groovydoc ascii cloverGenerateReport generateSite gitPublishPush"
+  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew --stacktrace groovydoc ascii cloverGenerateReport generateSite gitPublishPush"
 
   # Deploy Docker image to Bintray
   - export SECURATTA_VERSION=$(./travisw last_tag)
