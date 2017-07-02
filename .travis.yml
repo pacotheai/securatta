@@ -17,7 +17,6 @@ script:
   - docker-compose run -d --rm --name securatta -p 5050:5050 --entrypoint "tail -f ws/build.gradle" securatta
   - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew build"
 
-after_sucess:
   # Tag new version
   - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew release"
 
