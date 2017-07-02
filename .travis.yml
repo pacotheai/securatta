@@ -1,26 +1,25 @@
+language: java
+jdk:
+- oraclejdk8
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 sudo: required
-
-# This workflow only makes sense for master branch
 branches:
   only:
-    - master
-
+  - master
 services:
-  - docker
-
+- docker
 script:
-  # Build and test inside the development Docker image
-  - docker-compose run -d --rm --name securatta -p 5050:5050 --entrypoint "tail -f ws/build.gradle" securatta
-  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew build"
-
-  # Tag new version
-  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew --stacktrace release"
-
-  # Update project site
-  - docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew --stacktrace groovydoc ascii cloverGenerateReport generateSite gitPublishPush"
-
-  # Deploy Docker image to Bintray
-  - export SECURATTA_VERSION=$(./travisw last_tag)
-  - docker login -u $BR_USERNAME -p $BR_API_KEY pacotheai-docker-public.bintray.io
-  - docker tag pacotheai-docker-public.bintray.io/securatta pacotheai-docker-public.bintray.io/securatta:$SECURATTA_VERSION
-  - docker push pacotheai-docker-public.bintray.io/securatta:$SECURATTA_VERSION
+- docker-compose run -d --rm --name securatta -p 5050:5050 --entrypoint "tail -f ws/build.gradle" securatta
+- docker exec -it securatta /bin/sh -c "cd ws && sudo ./gradlew build final groovydoc ascii generateSite gitPublishPush -PgithubToken=$GH_TOKEN"
+- export SECURATTA_VERSION=$(./travisw last_tag)
+- docker login -u $BR_USERNAME -p $BR_API_KEY pacotheai-docker-public.bintray.io
+- docker tag pacotheai-docker-public.bintray.io/securatta pacotheai-docker-public.bintray.io/securatta:$SECURATTA_VERSION
+- docker push pacotheai-docker-public.bintray.io/securatta:$SECURATTA_VERSION
+env:
+  global:
+    secure: oWSFkqksOGiTv5VK9ywF60JFYorT7Y3yxOgQTpVRItJJOy7nzBuwVH3cVkVvjejMWR6NIcBBgOQkp2mtbFwMxVc83WSk7oKbiyY9MbHpRztoK2uxf3iNOzo046FkM07FHmg1An1yxCyXjkswdqQTjKBO3r7hwRuAaS/jNmvFjvw8VG0+W0u4KmHUOzywTvfTlVdVuoZ9Uo7TLGRcwwmKSYR5dJXAEPU5tl9bva2nyNGV+JshwZrdHzWRpKiEigSoteIkOfW0r8ZiBUXki2ZE52weXsNua/kCBUX+h8Zto5YBu16SW7sRJeH5VWLr+SkvYfQxNlAdzzclXlCokbA8fB2HTzF//WIPLLI0XWKLxCvmpc4oY4dbXzF4GeLfJabRVio+mVsMCye/qzCAr+ISa/kajRdK88FSo0v4bNkThN5G+6jYzM2oinPLF3xOli6HnxToaHIm/ZqGx+egC/K3AptEj+befzR9Ns5o/8fxlQ/vcXG7TDG20dTvp7zC+I/bHDhstZIG3caMmmKovlbCIa477BuCRRWmAWq9OoXIBVkdYL4oSgPXSvXCjPK2wj3Tw9RXonNLfsvyo8XW3dDXWrFgfQ9eafVDLwsd7YoJD8lqKOV1pG8BDHfNpv1kqlBZw5ACBr9e8CRSl70Ycq1yfA00OOaED8kRnjdNBd87+JM=

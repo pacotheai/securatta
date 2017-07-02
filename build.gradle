@@ -21,7 +21,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply from: 'gradle/docs.gradle'
 apply from: 'gradle/compiler.gradle'
 apply from: 'gradle/codenarc.gradle'
-apply from: 'gradle/clover.gradle'
+//apply from: 'gradle/clover.gradle'
 apply from: 'gradle/release.gradle'
 
 repositories {
@@ -44,7 +44,7 @@ dependencies {
     compile "org.cognitor.cassandra:cassandra-migration:$cassandra_migration"
     compile "com.datastax.cassandra:cassandra-driver-core:$cassandra_datastax"
 
-    clover "org.openclover:clover:$clover"
+    //  clover "org.openclover:clover:$clover"
     asciidoctor "io.spring.asciidoctor:spring-asciidoctor-extensions:$asciidoctor_ext"
 
     testCompile "org.spockframework:spock-core:$spock"

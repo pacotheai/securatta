@@ -19,16 +19,11 @@ gitPublishPush {
 
 task setAuthentication() {
   doLast {
-    def ghCredentials = 'echo $GH_TOKEN'.execute().text ?: githubToken
-
-    if (!ghCredentials) {
-      throw new IllegalArgumentException("Github credentials no present!")
-    }
-
-    System.setProperty('org.ajoberstar.grgit.auth.username', ghCredentials)
+    System.setProperty('org.ajoberstar.grgit.auth.username', githubToken)
   }
 }
 
+tasks.prepare.dependsOn setAuthentication
 tasks.release.dependsOn setAuthentication
 
 /**
