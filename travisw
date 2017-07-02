@@ -14,25 +14,25 @@ function get_ssh_remote_uri {
 }
 
 function change_git_remote {
-    if [[ -z "$AGENT_NAME" ]]; then
+    if [[ -z "$GH_NAME" ]]; then
        echo "ERROR: No agent name found"
     else
-        if [[ -z "$AGENT_EMAIL" ]]; then
+        if [[ -z "$GH_EMAIL" ]]; then
             echo "ERROR: No agent email found"
         else
-            git config user.name $AGENT_NAME
-            git config user.email $AGENT_EMAIL
+            git config user.name $GH_NAME
+            git config user.email $GH_EMAIL
             git remote set-url origin $(get_ssh_remote_uri)
         fi
     fi
 }
 
 function add_ssh_id {
-    if [[ -z "$AGENT_PRIV_KEY" ]]; then
+    if [[ -z "$GH_PRIV_KEY" ]]; then
        echo "ERROR: No agent private key found"
     else
         mkdir -p ~/.ssh &&
-            (echo "$AGENT_PRIV_KEY" > ~/.ssh/id_rsa) &&
+            (echo "$GH_PRIV_KEY" > ~/.ssh/id_rsa) &&
             (echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config)
     fi
 }
