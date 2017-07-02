@@ -17,6 +17,12 @@ gitPublishPush {
   dependsOn 'generateSite'
 }
 
+release {
+  tagStrategy {
+    prefixNameWithV = false
+  }
+}
+
 task setAuthentication() {
   doLast {
     System.setProperty('org.ajoberstar.grgit.auth.username', githubToken)
