@@ -11,6 +11,7 @@ services:
 before_script:
   # Set ssh remote repo to be able to push tags
   - ./travisw change_git_remote
+  - ./travisw add_ssh_id
 
 script:
   # Build and test inside the development Docker image
